@@ -1,0 +1,295 @@
+:root {
+  --bg: #0d1117;
+  --bg-surface: #161b22;
+  --bg-surface-hover: #1c2333;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --accent: #58a6ff;
+  --accent-hover: #79b8ff;
+  --border: #30363d;
+  --tag-bg: #1f6feb33;
+  --tag-text: #58a6ff;
+  --max-width: 52rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 17px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  width: 100%;
+}
+
+/* Header */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.site-header nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.15s;
+}
+
+.site-header nav a:hover {
+  color: var(--accent);
+}
+
+/* Main content */
+main {
+  flex: 1;
+  padding: 2.5rem 0;
+}
+
+/* Homepage */
+.hero {
+  margin-bottom: 3rem;
+}
+
+.hero h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+}
+
+.hero p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.howto-list {
+  list-style: none;
+}
+
+.howto-list li {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.howto-list li:hover {
+  border-color: var(--accent);
+  background: var(--bg-surface);
+}
+
+.howto-list a {
+  display: block;
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.howto-list .howto-link-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.howto-list .howto-link-desc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Tags */
+.howto-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.tag {
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+/* Howto article */
+.howto-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.howto-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.4rem;
+}
+
+.howto-description {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+.howto-content h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.howto-content h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.howto-content p {
+  margin-bottom: 1rem;
+}
+
+.howto-content ul,
+.howto-content ol {
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.howto-content li {
+  margin-bottom: 0.35rem;
+}
+
+.howto-content li ul {
+  margin-top: 0.35rem;
+}
+
+.howto-content blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem 1rem;
+  margin: 1.5rem 0;
+  background: var(--bg-surface);
+  border-radius: 0 6px 6px 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.howto-content code {
+  background: var(--bg-surface);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+.howto-content pre {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.howto-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.howto-content strong {
+  font-weight: 600;
+}
+
+.howto-content em {
+  color: var(--text-muted);
+}
+
+.howto-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* Checklist style for task lists */
+.howto-content li input[type="checkbox"] {
+  margin-right: 0.4rem;
+}
+
+.howto-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.howto-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.howto-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Section heading */
+.section-heading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  html {
+    font-size: 16px;
+  }
+
+  .hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .howto-header h1 {
+    font-size: 1.6rem;
+  }
+}

@@ -1,0 +1,27 @@
+title: AI Jedi
+description: Advanced AI workflow guides — patterns, automation, and power-user techniques
+baseurl: "/ai-jedi"
+url: "https://sklarm.github.io"
+
+markdown: kramdown
+permalink: pretty
+
+collections:
+  howtos:
+    output: true
+    permalink: /howtos/:slug/
+
+defaults:
+  - scope:
+      path: ""
+      type: "howtos"
+    values:
+      layout: "howto"
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - LICENSE
+  - ai-jedi-workflow.md
+  - vendor
