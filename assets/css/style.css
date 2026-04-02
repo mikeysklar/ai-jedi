@@ -219,6 +219,8 @@ main {
   padding: 1rem 1.25rem;
   overflow-x: auto;
   margin: 1rem 0;
+  font-size: 0.85em;
+  line-height: 1.55;
 }
 
 .howto-content pre code {
@@ -237,7 +239,48 @@ main {
 .howto-content hr {
   border: none;
   border-top: 1px solid var(--border);
-  margin: 2rem 0;
+  margin: 2.5rem 0;
+}
+
+/* Tables */
+.howto-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.92em;
+}
+
+.howto-content thead th {
+  background: var(--bg-surface);
+  color: var(--accent);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.howto-content tbody td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.howto-content tbody tr:hover {
+  background: var(--bg-surface-hover);
+}
+
+/* Styled h3 sections with emoji anchors */
+.howto-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.6rem;
+  color: var(--text);
+}
+
+/* "Quick Start" callout sections */
+.howto-content h3:has(+ pre),
+.howto-content h3:has(+ p + pre) {
+  color: var(--accent);
 }
 
 /* Checklist style for task lists */
