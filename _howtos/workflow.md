@@ -18,8 +18,10 @@ tags: [workflow, claude, architecture, agents, testing]
 └─────────────────────────────────────────────────────────┘
 ```
 
-> **The old way:** Dump everything into one massive prompt. Pray.
-> **The JEDI way:** Treat AI like a production crew — each specialist gets one job, tight context, and clear deliverables.
+| | Approach |
+| --- | --- |
+| 😰 **The old way** | Dump everything into one massive prompt. Pray. |
+| ⚔️ **The AI JEDI way** | Treat AI like a production crew — each specialist gets one job, tight context, and clear deliverables. |
 
 ---
 
@@ -36,7 +38,7 @@ Before touching any code, brain dump the full system architecture. Then have Cla
 **What goes in the Project Brief:**
 
 | Section | Purpose |
-|---|---|
+| --- | --- |
 | Architecture decisions | The "why" behind structural choices |
 | Module contracts | Inputs, outputs, and possible errors per module |
 | Constraints & assumptions | Hard limits and things you're betting on |
@@ -44,17 +46,10 @@ Before touching any code, brain dump the full system architecture. Then have Cla
 
 ### 📋 Example: Planning a CLI Todo App
 
-**Bad prompt (the old way):**
-> *"Build me a todo app in Python with add, delete, list, and due dates"*
-
-**JEDI prompt:**
-> *"I'm building a CLI todo app in Python. Here's the full architecture:*
-> - *Storage layer: JSON file on disk*
-> - *CLI layer: argparse with subcommands (add, delete, list, done)*
-> - *Model layer: Todo dataclass with id, title, done, due_date*
-> - *Display layer: rich library for table output*
->
-> *Propose a module hierarchy and interface contracts for each layer. Flag any design decisions I should make before we start building."*
+| | Prompt |
+| --- | --- |
+| 😰 **Old way** | *"Build me a todo app in Python with add, delete, list, and due dates"* |
+| ⚔️ **AI JEDI** | *"I'm building a CLI todo app in Python. Here's the full architecture: Storage layer (JSON on disk), CLI layer (argparse with subcommands: add, delete, list, done), Model layer (Todo dataclass with id, title, done, due_date), Display layer (rich library for table output). Propose a module hierarchy and interface contracts for each layer. Flag any design decisions I should make before we start building."* |
 
 ```
   📐 ARCHITECTURE PHASE
@@ -110,7 +105,7 @@ echo "✅ Project brief created at docs/PROJECT_BRIEF.md"
 Build **one module at a time** — never all at once. Each module gets an interface contract first:
 
 | Contract field | Description | Example (Todo app) |
-|---|---|---|
+| --- | --- | --- |
 | **Input** | What goes in | `title: str, due_date: Optional[date]` |
 | **Output** | What comes out | `Todo` object with generated `id` |
 | **Errors** | What can go wrong | `DuplicateTitleError`, `InvalidDateError` |
@@ -159,7 +154,7 @@ Every module prompt should include explicit constraints:
 ### ✅ Do This / ❌ Not That
 
 | ❌ Vague prompt | ✅ JEDI prompt |
-|---|---|
+| --- | --- |
 | "Handle errors properly" | "Must raise `StorageError` on write failure, never silently swallow exceptions" |
 | "Make it robust" | "Must handle empty input, None values, and strings exceeding 500 chars" |
 | "Write good code" | "Carefully review the full module before implementing. Fully implement — do not stub or skip edge cases" |
@@ -299,7 +294,7 @@ Claude has **zero memory between sessions**. Every new chat starts from scratch.
 After every meaningful chat, extract and save to the Project Brief:
 
 | What to capture | Why |
-|---|---|
+| --- | --- |
 | Decisions made | So you don't relitigate them |
 | Modules completed | So you know what's done |
 | Issues discovered | So they don't get rediscovered |
@@ -365,7 +360,7 @@ Spin up a **dedicated agent** whose only job is code review. Don't just say "rev
 ### 📊 Review Rubric
 
 | Check | Question |
-|---|---|
+| --- | --- |
 | 🏷️ Naming | Are conventions consistent across modules? |
 | 🚨 Errors | Is every error path handled (not just the happy path)? |
 | 🔌 Coupling | Can modules be swapped without breaking others? |
@@ -390,7 +385,7 @@ or refactor code. You ONLY review and report.
 Rate each as ✅ PASS | ⚠️ WARN | ❌ FAIL with a one-line reason.
 
 | # | Check            | Question                                      |
-|---|------------------|-----------------------------------------------|
+| --- | --- | --- |
 | 1 | 🏷️ Naming        | Are naming conventions consistent?             |
 | 2 | 🚨 Error paths   | Is every error handled (not just happy path)?  |
 | 3 | 🔌 Coupling      | Can this module be swapped without breakage?   |
@@ -434,7 +429,7 @@ git diff --name-only HEAD~1 | xargs -I {} claude \
 Before deploying a monitoring agent, define its scope explicitly:
 
 | Scope question | Example answer |
-|---|---|
+| --- | --- |
 | What triggers it? | Log errors matching `ERROR:storage`, test failures, spec drift |
 | What can it fix alone? | Retry transient failures, restart crashed processes |
 | What needs a human? | Schema changes, security alerts, contract violations |
@@ -667,7 +662,7 @@ echo "💡 Next: merge findings into docs/PROJECT_BRIEF.md"
 **Analogy:** A codebase without version tracking is like a game of telephone — by the time the message reaches the end, it's unrecognizable.
 
 | Practice | Why it matters |
-|---|---|
+| --- | --- |
 | Dated context snapshots | Know what was true *when* a module was built |
 | Versioned contracts (v1 → v2) | When a contract changes, old assumptions don't silently break |
 | Periodic full-codebase review | Catch drift before it compounds |
@@ -772,7 +767,7 @@ done
 ### 🥋 The Old Way vs The JEDI Way
 
 | | 😰 Old Way | ⚔️ JEDI Way |
-|---|---|---|
+| --- | --- | --- |
 | **Prompting** | One giant prompt, hope for the best | Phased, scoped, contracted |
 | **Context** | Copy-paste everything every time | Curated brief, inject only what's relevant |
 | **Testing** | "It looks right" | Unit tests per module, integration across boundaries |
