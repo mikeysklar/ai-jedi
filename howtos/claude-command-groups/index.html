@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Command Groups — AI JEDI</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-surface: #161b22;
+      --bg-surface-hover: #1c2333;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-hover: #79b8ff;
+      --border: #30363d;
+      --tag-bg: #1f6feb33;
+      --tag-text: #58a6ff;
+      --max-width: 52rem;
+      --green: #7ee787;
+      --orange: #ffa657;
+      --red: #ff7b72;
+      --purple: #d2a8ff;
+      --yellow: #e3b341;
+      --cyan: #79c0ff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { font-size: 17px; scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem; width: 100%; }
+
+    /* Header */
+    .site-header { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    .site-header .container { display: flex; align-items: center; justify-content: space-between; }
+    .site-title { font-size: 1.25rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .site-header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.15s; }
+    .site-header nav a:hover { color: var(--accent); }
+
+    main { flex: 1; padding: 2.5rem 0; }
+
+    /* Page header */
+    .page-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .page-header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+    .page-header p { color: var(--text-muted); font-size: 1.05rem; }
+
+    /* Terminal widget */
+    .terminal-window {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1.5rem 0 2.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    .terminal-titlebar {
+      background: var(--bg-surface);
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .terminal-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .terminal-dot.red { background: #ff5f57; }
+    .terminal-dot.yellow { background: #febc2e; }
+    .terminal-dot.green { background: #28c840; }
+    .terminal-title {
+      flex: 1; text-align: center;
+      color: var(--text-muted); font-size: 0.8rem;
+      margin-right: 2.5rem;
+    }
+    .terminal-body {
+      padding: 1.25rem 1.5rem;
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    /* Tree elements */
+    .tree-line { white-space: pre; cursor: default; }
+    .tree-root { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+    .tree-branch {
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.1s;
+      display: block;
+      padding: 1px 0;
+      border-radius: 3px;
+    }
+    .tree-branch:hover { background: var(--bg-surface-hover); }
+    .tree-group-label { color: var(--yellow); font-weight: 600; }
+    .tree-subgroup-label { color: var(--cyan); font-weight: 600; }
+    .tree-cmd { color: var(--green); }
+    .tree-flag { color: var(--orange); }
+    .tree-slash { color: var(--purple); }
+    .tree-desc { color: var(--text-muted); }
+    .tree-connector { color: var(--border); }
+    .tree-icon { margin-right: 2px; }
+
+    .tree-children { overflow: hidden; transition: max-height 0.25s ease; }
+    .tree-children.collapsed { max-height: 0 !important; }
+
+    .collapse-indicator { color: var(--text-muted); font-size: 0.75rem; display: inline; }
+
+    /* Legend */
+    .legend {
+      display: flex; flex-wrap: wrap; gap: 1.25rem;
+      padding: 0.75rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-surface);
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.35rem; }
+    .legend-swatch { width: 10px; height: 10px; border-radius: 2px; }
+
+    /* Summary cards */
+    .cards-heading {
+      font-size: 1.4rem; font-weight: 700;
+      margin: 2rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin: 1.25rem 0;
+    }
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.15rem 1.25rem;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .card:hover { border-color: var(--accent); background: var(--bg-surface-hover); }
+    .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem; }
+    .card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; }
+    .card .card-count { color: var(--accent); font-size: 0.78rem; font-weight: 500; background: var(--tag-bg); padding: 0.1rem 0.5rem; border-radius: 999px; }
+
+    /* Source link */
+    .source-section {
+      margin-top: 2.5rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .source-section a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .source-section a:hover { text-decoration: underline; }
+
+    /* Back link */
+    .back-link { margin-top: 2rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .back-link a:hover { text-decoration: underline; }
+
+    /* Footer */
+    .site-footer { border-top: 1px solid var(--border); padding: 1.5rem 0; color: var(--text-muted); font-size: 0.85rem; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      html { font-size: 16px; }
+      .page-header h1 { font-size: 1.6rem; }
+      .terminal-body { font-size: 0.72rem; padding: 1rem; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/ai-jedi/" class="site-title">AI JEDI</a>
+      <nav>
+        <a href="/ai-jedi/howtos/">Howtos</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <h1>Claude Code Command Map</h1>
+      <p>Interactive mind map of every CLI command, flag, and /slash command &mdash; click branches to expand &amp; collapse.</p>
+    </div>
+
+    <!-- Terminal Widget -->
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">claude &mdash; command reference</span>
+      </div>
+      <div class="terminal-body" id="tree"></div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--green)"></span> CLI command</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--orange)"></span> Flag / option</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--purple)"></span> /slash command</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--yellow)"></span> Group</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--cyan)"></span> Subgroup</div>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <h2 class="cards-heading">Group Summary</h2>
+    <div class="card-grid" id="cards"></div>
+
+    <!-- Source -->
+    <div class="source-section">
+      <p>
+        <strong>Source:</strong>
+        <a href="https://code.claude.com/docs/en/cli-reference" target="_blank" rel="noopener">CLI Reference</a> &middot;
+        <a href="https://code.claude.com/docs/en/commands" target="_blank" rel="noopener">Built-in Commands</a> &middot;
+        Claude Code Docs
+      </p>
+    </div>
+
+    <div class="back-link">
+      <a href="/ai-jedi/howtos/">&larr; Back to Howtos</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 AI JEDI</p>
+    </div>
+  </footer>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+const DATA = [
+  {
+    name: "Sessions",
+    icon: "&#x25B6;",
+    desc: "Start, continue, resume, and manage conversation sessions",
+    items: [
+      { t:"cmd", n:"claude", d:"Start interactive session" },
+      { t:"cmd", n:'claude "query"', d:"Start with initial prompt" },
+      { t:"cmd", n:"claude -c", d:"Continue most recent conversation" },
+      { t:"cmd", n:'claude -r <id> "query"', d:"Resume session by ID or name" },
+      { t:"flag", n:"--continue, -c", d:"Load most recent conversation" },
+      { t:"flag", n:"--resume, -r", d:"Resume specific session by ID/name" },
+      { t:"flag", n:"--session-id", d:"Use specific UUID for conversation" },
+      { t:"flag", n:"--fork-session", d:"Create new session ID when resuming" },
+      { t:"flag", n:"--from-pr", d:"Resume sessions linked to a GitHub PR" },
+      { t:"flag", n:"--name, -n", d:"Set display name for session" },
+      { t:"flag", n:"--no-session-persistence", d:"Don't save session to disk (print mode)" },
+      { t:"flag", n:"--worktree, -w", d:"Start in isolated git worktree" },
+      { t:"flag", n:"--tmux", d:"Create tmux session for worktree" },
+    ]
+  },
+  {
+    name: "Auth",
+    icon: "&#x1F512;",
+    desc: "Authentication and account management",
+    items: [
+      { t:"cmd", n:"claude auth login", d:"Sign in (--email, --sso, --console)" },
+      { t:"cmd", n:"claude auth logout", d:"Log out from Anthropic account" },
+      { t:"cmd", n:"claude auth status", d:"Show auth status as JSON (--text for readable)" },
+    ]
+  },
+  {
+    name: "Agents &amp; MCP",
+    icon: "&#x1F916;",
+    desc: "Subagents, MCP servers, plugins, and channels",
+    items: [
+      { t:"cmd", n:"claude agents", d:"List configured subagents by source" },
+      { t:"cmd", n:"claude mcp", d:"Configure MCP servers" },
+      { t:"cmd", n:"claude plugin", d:"Manage plugins (install, list, remove)" },
+      { t:"cmd", n:"claude remote-control", d:"Start Remote Control server" },
+      { t:"flag", n:"--agent", d:"Specify agent for session" },
+      { t:"flag", n:"--agents", d:"Define custom subagents via JSON" },
+      { t:"flag", n:"--mcp-config", d:"Load MCP servers from JSON file" },
+      { t:"flag", n:"--strict-mcp-config", d:"Only use MCP from --mcp-config" },
+      { t:"flag", n:"--channels", d:"MCP channel notifications to listen for" },
+      { t:"flag", n:"--dangerously-load-development-channels", d:"Load unapproved channels" },
+      { t:"flag", n:"--plugin-dir", d:"Load plugins from directory" },
+      { t:"flag", n:"--chrome", d:"Enable Chrome browser integration" },
+      { t:"flag", n:"--no-chrome", d:"Disable Chrome integration" },
+      { t:"flag", n:"--teammate-mode", d:"Agent team display: auto|in-process|tmux" },
+    ]
+  },
+  {
+    name: "Permissions &amp; Tools",
+    icon: "&#x1F6E1;",
+    desc: "Permission modes, tool allowlists, and safety controls",
+    items: [
+      { t:"cmd", n:"claude auto-mode defaults", d:"Print built-in auto mode rules" },
+      { t:"flag", n:"--permission-mode", d:"Begin in: default|acceptEdits|plan|auto|dontAsk|bypass" },
+      { t:"flag", n:"--enable-auto-mode", d:"Unlock auto mode in Shift+Tab cycle" },
+      { t:"flag", n:"--allow-dangerously-skip-permissions", d:"Add bypass to mode cycle" },
+      { t:"flag", n:"--dangerously-skip-permissions", d:"Skip permission prompts" },
+      { t:"flag", n:"--allowedTools", d:"Tools that run without permission prompt" },
+      { t:"flag", n:"--disallowedTools", d:"Tools removed from model context" },
+      { t:"flag", n:"--tools", d:'Restrict built-in tools: "Bash,Edit,Read"' },
+      { t:"flag", n:"--permission-prompt-tool", d:"MCP tool for permission prompts" },
+    ]
+  },
+  {
+    name: "System Prompt",
+    icon: "&#x1F4DD;",
+    desc: "Replace or extend the system prompt",
+    items: [
+      { t:"flag", n:"--system-prompt", d:"Replace entire default prompt" },
+      { t:"flag", n:"--system-prompt-file", d:"Replace with file contents" },
+      { t:"flag", n:"--append-system-prompt", d:"Append text to default prompt" },
+      { t:"flag", n:"--append-system-prompt-file", d:"Append file contents to prompt" },
+    ]
+  },
+  {
+    name: "Output &amp; Format",
+    icon: "&#x1F4E4;",
+    desc: "Control output format, streaming, and print mode",
+    items: [
+      { t:"cmd", n:"claude -p", d:"Print response without interactive mode" },
+      { t:"cmd", n:'cat file | claude -p "query"', d:"Process piped content" },
+      { t:"flag", n:"--print, -p", d:"Print mode (non-interactive)" },
+      { t:"flag", n:"--output-format", d:"Output: text | json | stream-json" },
+      { t:"flag", n:"--input-format", d:"Input: text | stream-json" },
+      { t:"flag", n:"--json-schema", d:"Validated JSON matching schema (print mode)" },
+      { t:"flag", n:"--include-partial-messages", d:"Include partial streaming events" },
+      { t:"flag", n:"--include-hook-events", d:"Include hook lifecycle in stream" },
+      { t:"flag", n:"--replay-user-messages", d:"Re-emit user messages on stdout" },
+      { t:"flag", n:"--verbose", d:"Full turn-by-turn output logging" },
+    ]
+  },
+  {
+    name: "Session Config",
+    icon: "&#x2699;",
+    desc: "Model, effort, budget, and runtime tuning",
+    items: [
+      { t:"flag", n:"--model", d:"Set model: sonnet | opus | full name" },
+      { t:"flag", n:"--effort", d:"Effort level: low|medium|high|max" },
+      { t:"flag", n:"--fallback-model", d:"Fallback model when overloaded" },
+      { t:"flag", n:"--max-turns", d:"Limit agentic turns (print mode)" },
+      { t:"flag", n:"--max-budget-usd", d:"Max dollar spend on API calls" },
+      { t:"flag", n:"--betas", d:"Beta headers for API requests" },
+      { t:"flag", n:"--settings", d:"Load settings from JSON file/string" },
+      { t:"flag", n:"--setting-sources", d:"Setting sources: user,project,local" },
+      { t:"flag", n:"--disable-slash-commands", d:"Disable all skills/commands" },
+      { t:"flag", n:"--bare", d:"Minimal mode: skip discovery for speed" },
+    ]
+  },
+  {
+    name: "Environment",
+    icon: "&#x1F4BB;",
+    desc: "Directories, IDE, debugging, and version info",
+    items: [
+      { t:"cmd", n:"claude update", d:"Update to latest version" },
+      { t:"flag", n:"--add-dir", d:"Add working directories" },
+      { t:"flag", n:"--ide", d:"Auto-connect to IDE on startup" },
+      { t:"flag", n:"--debug", d:'Debug mode with category filter: "api,hooks"' },
+      { t:"flag", n:"--debug-file", d:"Write debug logs to file" },
+      { t:"flag", n:"--init", d:"Run init hooks, start interactive" },
+      { t:"flag", n:"--init-only", d:"Run init hooks, then exit" },
+      { t:"flag", n:"--maintenance", d:"Run maintenance hooks + interactive" },
+      { t:"flag", n:"--version, -v", d:"Output version number" },
+    ]
+  },
+  {
+    name: "Remote &amp; Integrations",
+    icon: "&#x2601;",
+    desc: "Web sessions, remote control, and teleport",
+    items: [
+      { t:"flag", n:"--remote", d:"Create web session on claude.ai" },
+      { t:"flag", n:"--remote-control, --rc", d:"Enable Remote Control for session" },
+      { t:"flag", n:"--teleport", d:"Resume web session in local terminal" },
+    ]
+  },
+  {
+    name: "/Slash Commands",
+    icon: "&#x2F;",
+    desc: "Built-in interactive commands typed inside a session",
+    subgroups: [
+      {
+        name: "Session",
+        items: [
+          { t:"slash", n:"/clear", d:"Clear conversation (aliases: /reset, /new)" },
+          { t:"slash", n:"/compact [instructions]", d:"Compact conversation with focus" },
+          { t:"slash", n:"/resume [session]", d:"Resume conversation (alias: /continue)" },
+          { t:"slash", n:"/branch [name]", d:"Branch conversation (alias: /fork)" },
+          { t:"slash", n:"/rewind", d:"Rewind conversation/code (alias: /checkpoint)" },
+          { t:"slash", n:"/rename [name]", d:"Rename current session" },
+          { t:"slash", n:"/export [filename]", d:"Export conversation as text" },
+          { t:"slash", n:"/copy [N]", d:"Copy last response to clipboard" },
+          { t:"slash", n:"/exit", d:"Exit CLI (alias: /quit)" },
+          { t:"slash", n:"/plan [desc]", d:"Enter plan mode" },
+          { t:"slash", n:"/btw <question>", d:"Side question without adding context" },
+          { t:"slash", n:"/fast [on|off]", d:"Toggle fast mode" },
+          { t:"slash", n:"/tasks", d:"List background tasks (alias: /bashes)" },
+        ]
+      },
+      {
+        name: "Files & Editing",
+        items: [
+          { t:"slash", n:"/diff", d:"Interactive diff viewer for uncommitted changes" },
+          { t:"slash", n:"/add-dir <path>", d:"Add working directory for session" },
+        ]
+      },
+      {
+        name: "Config & Settings",
+        items: [
+          { t:"slash", n:"/config", d:"Open settings UI (alias: /settings)" },
+          { t:"slash", n:"/model [model]", d:"Change AI model" },
+          { t:"slash", n:"/effort [level]", d:"Set effort: low|medium|high|max|auto" },
+          { t:"slash", n:"/permissions", d:"Manage tool permission rules (alias: /allowed-tools)" },
+          { t:"slash", n:"/color [color]", d:"Set prompt bar color" },
+          { t:"slash", n:"/theme", d:"Change color theme" },
+          { t:"slash", n:"/vim", d:"Toggle Vim / Normal editing mode" },
+          { t:"slash", n:"/sandbox", d:"Toggle sandbox mode" },
+          { t:"slash", n:"/privacy-settings", d:"View/update privacy settings (Pro/Max)" },
+          { t:"slash", n:"/keybindings", d:"Open keybindings config" },
+          { t:"slash", n:"/terminal-setup", d:"Configure terminal keybindings" },
+          { t:"slash", n:"/statusline", d:"Configure status line" },
+          { t:"slash", n:"/extra-usage", d:"Configure extra usage for rate limits" },
+        ]
+      },
+      {
+        name: "Info & Diagnostics",
+        items: [
+          { t:"slash", n:"/help", d:"Show help and commands" },
+          { t:"slash", n:"/cost", d:"Show token usage statistics" },
+          { t:"slash", n:"/usage", d:"Show plan limits and rate status" },
+          { t:"slash", n:"/status", d:"Show version, model, account info" },
+          { t:"slash", n:"/context", d:"Visualize context usage as grid" },
+          { t:"slash", n:"/doctor", d:"Diagnose installation and settings" },
+          { t:"slash", n:"/stats", d:"Daily usage, streaks, model prefs" },
+          { t:"slash", n:"/insights", d:"Analyze sessions, patterns, friction" },
+          { t:"slash", n:"/release-notes", d:"View full changelog" },
+          { t:"slash", n:"/powerup", d:"Interactive feature lessons with demos" },
+          { t:"slash", n:"/feedback [report]", d:"Submit feedback (alias: /bug)" },
+        ]
+      },
+      {
+        name: "Git & GitHub",
+        items: [
+          { t:"slash", n:"/pr-comments [PR]", d:"Fetch GitHub PR comments" },
+          { t:"slash", n:"/security-review", d:"Analyze branch for security vulns" },
+          { t:"slash", n:"/install-github-app", d:"Set up Claude GitHub Actions" },
+        ]
+      },
+      {
+        name: "Plugins & Integrations",
+        items: [
+          { t:"slash", n:"/plugin", d:"Manage plugins" },
+          { t:"slash", n:"/reload-plugins", d:"Reload active plugins" },
+          { t:"slash", n:"/skills", d:"List available skills" },
+          { t:"slash", n:"/mcp", d:"Manage MCP server connections" },
+          { t:"slash", n:"/agents", d:"Manage agent configurations" },
+          { t:"slash", n:"/chrome", d:"Configure Chrome integration" },
+          { t:"slash", n:"/hooks", d:"View hook configurations" },
+          { t:"slash", n:"/ide", d:"Manage IDE integrations" },
+          { t:"slash", n:"/remote-control", d:"Enable remote control (alias: /rc)" },
+          { t:"slash", n:"/remote-env", d:"Configure remote environment" },
+          { t:"slash", n:"/schedule [desc]", d:"Create/manage scheduled tasks" },
+          { t:"slash", n:"/install-slack-app", d:"Install Claude Slack app" },
+        ]
+      },
+      {
+        name: "Misc",
+        items: [
+          { t:"slash", n:"/init", d:"Initialize project CLAUDE.md" },
+          { t:"slash", n:"/memory", d:"Edit CLAUDE.md & auto-memory" },
+          { t:"slash", n:"/login", d:"Sign in to Anthropic" },
+          { t:"slash", n:"/logout", d:"Sign out" },
+          { t:"slash", n:"/desktop", d:"Continue in Desktop app (alias: /app)" },
+          { t:"slash", n:"/mobile", d:"QR code for mobile app" },
+          { t:"slash", n:"/voice", d:"Toggle push-to-talk voice dictation" },
+          { t:"slash", n:"/upgrade", d:"Open upgrade page" },
+          { t:"slash", n:"/passes", d:"Share free week passes" },
+          { t:"slash", n:"/stickers", d:"Order Claude Code stickers" },
+        ]
+      },
+    ]
+  }
+];
+
+// ── Rendering ─────────────────────────────────────────────────────────────────
+const B  = "&#x2502;";   // │
+const T  = "&#x251C;";   // ├
+const L  = "&#x2514;";   // └
+const H  = "&#x2500;";   // ─
+
+function esc(s) { return s.replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function itemSpan(item) {
+  const cls = item.t === "cmd" ? "tree-cmd" : item.t === "flag" ? "tree-flag" : "tree-slash";
+  return `<span class="${cls}">${esc(item.n)}</span>  <span class="tree-desc">${esc(item.d)}</span>`;
+}
+
+function renderItems(items, prefix, isLastParent) {
+  let html = "";
+  items.forEach((item, i) => {
+    const last = i === items.length - 1;
+    const conn = last ? `${L}${H}${H}` : `${T}${H}${H}`;
+    html += `<span class="tree-line">${prefix}<span class="tree-connector">${conn}</span> ${itemSpan(item)}</span>\n`;
+  });
+  return html;
+}
+
+function buildTree() {
+  let html = `<span class="tree-line tree-root">claude</span>\n`;
+  DATA.forEach((group, gi) => {
+    const lastGroup = gi === DATA.length - 1;
+    const gConn = lastGroup ? `${L}${H}${H}` : `${T}${H}${H}`;
+    const gPipe = lastGroup ? "   " : `<span class="tree-connector">${B}</span>  `;
+    const id = `g${gi}`;
+    const count = group.subgroups
+      ? group.subgroups.reduce((s,sg) => s + sg.items.length, 0)
+      : group.items.length;
+
+    html += `<span class="tree-branch" data-target="${id}" data-expanded="true"><span class="tree-connector">${gConn}</span> <span class="tree-icon">${group.icon}</span><span class="tree-group-label">${group.name}</span> <span class="collapse-indicator">[${count}]</span></span>\n`;
+    html += `<span class="tree-children" id="${id}">`;
+
+    if (group.subgroups) {
+      group.subgroups.forEach((sg, si) => {
+        const lastSg = si === group.subgroups.length - 1;
+        const sgConn = lastSg ? `${L}${H}${H}` : `${T}${H}${H}`;
+        const sgPipe = lastSg ? "   " : `<span class="tree-connector">${B}</span>  `;
+        const sgId = `g${gi}s${si}`;
+        html += `<span class="tree-branch" data-target="${sgId}" data-expanded="true">${gPipe}<span class="tree-connector">${sgConn}</span> <span class="tree-subgroup-label">${esc(sg.name)}</span> <span class="collapse-indicator">[${sg.items.length}]</span></span>\n`;
+        html += `<span class="tree-children" id="${sgId}">`;
+        html += renderItems(sg.items, gPipe + sgPipe, lastSg);
+        html += `</span>`;
+      });
+    } else {
+      html += renderItems(group.items, gPipe, lastGroup);
+    }
+
+    html += `</span>`;
+  });
+  return html;
+}
+
+document.getElementById("tree").innerHTML = buildTree();
+
+// ── Click to expand/collapse ──────────────────────────────────────────────────
+document.getElementById("tree").addEventListener("click", (e) => {
+  const branch = e.target.closest(".tree-branch");
+  if (!branch) return;
+  const target = document.getElementById(branch.dataset.target);
+  if (!target) return;
+  const expanded = branch.dataset.expanded === "true";
+  if (expanded) {
+    target.style.maxHeight = target.scrollHeight + "px";
+    requestAnimationFrame(() => { target.classList.add("collapsed"); });
+    branch.dataset.expanded = "false";
+  } else {
+    target.classList.remove("collapsed");
+    target.style.maxHeight = target.scrollHeight + "px";
+    target.addEventListener("transitionend", () => { target.style.maxHeight = "none"; }, { once: true });
+    branch.dataset.expanded = "true";
+  }
+});
+
+// ── Summary cards ─────────────────────────────────────────────────────────────
+const cardsEl = document.getElementById("cards");
+DATA.forEach(group => {
+  const count = group.subgroups
+    ? group.subgroups.reduce((s,sg) => s + sg.items.length, 0)
+    : group.items.length;
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `<h3><span>${group.icon}</span> ${group.name} <span class="card-count">${count}</span></h3><p>${group.desc}</p>`;
+  cardsEl.appendChild(card);
+});
+</script>
+</body>
+</html>
