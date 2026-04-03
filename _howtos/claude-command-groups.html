@@ -1,9 +1,15 @@
+---
+title: "Claude Code Command Map"
+description: "Interactive ASCII mind map of every CLI command, flag, and /slash command — grouped and color-coded."
+tags: [claude-code, cli, commands, reference]
+layout: null
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Claude Code Command Groups — AI JEDI</title>
+  <title>Claude Code Command Map — AI JEDI</title>
   <style>
     :root {
       --bg: #0d1117;
@@ -241,7 +247,6 @@
   </footer>
 
 <script>
-// ── Data ──────────────────────────────────────────────────────────────────────
 const DATA = [
   {
     name: "Sessions",
@@ -489,11 +494,10 @@ const DATA = [
   }
 ];
 
-// ── Rendering ─────────────────────────────────────────────────────────────────
-const B  = "&#x2502;";   // │
-const T  = "&#x251C;";   // ├
-const L  = "&#x2514;";   // └
-const H  = "&#x2500;";   // ─
+const B  = "&#x2502;";
+const T  = "&#x251C;";
+const L  = "&#x2514;";
+const H  = "&#x2500;";
 
 function esc(s) { return s.replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
@@ -548,7 +552,6 @@ function buildTree() {
 
 document.getElementById("tree").innerHTML = buildTree();
 
-// ── Click to expand/collapse ──────────────────────────────────────────────────
 document.getElementById("tree").addEventListener("click", (e) => {
   const branch = e.target.closest(".tree-branch");
   if (!branch) return;
@@ -567,7 +570,6 @@ document.getElementById("tree").addEventListener("click", (e) => {
   }
 });
 
-// ── Summary cards ─────────────────────────────────────────────────────────────
 const cardsEl = document.getElementById("cards");
 DATA.forEach(group => {
   const count = group.subgroups
