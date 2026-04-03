@@ -1,5 +1,5 @@
 ---
-title: "JEDI AI Workflow — Claude Power User Guide"
+title: "AI JEDI Workflow — Claude Power User Guide"
 description: "A phased approach to building with AI: architecture, modular builds, guardrails, testing, and agent delegation."
 tags: [workflow, claude, architecture, agents, testing]
 ---

@@ -1,4 +1,4 @@
-# 🧠 JEDI AI Workflow — Claude Power User Guide
+# 🧠 AI JEDI Workflow — Claude Power User Guide
 
 ---
 

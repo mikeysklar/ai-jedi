@@ -4,7 +4,7 @@ title: Home
 ---
 
 <div class="hero">
-  <h1>AI Jedi</h1>
+  <h1>AI JEDI</h1>
   <p>Workflow guides for designing with AI — catch patterns, automate solutions, and work like a power user.</p>
 </div>
 
