@@ -4,7 +4,7 @@ description: "A three-layer agentic workflow (Orchestrator → Architect → Imp
 tags: [agents, architecture, automation, llm, workflow, claude-code]
 ---
 
-<img src="{{ '/assets/images/layered-agent-architecture.png' | relative_url }}" alt="Layered Agent Architecture" style="max-width: 50%; height: auto;" />
+<img src="{{ '/assets/images/layered-agent-architecture.png' | relative_url }}" alt="Layered Agent Architecture" style="max-width: 75%; height: auto;" />
 
 ## 🎯 TL;DR
 
