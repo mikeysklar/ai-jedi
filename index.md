@@ -14,10 +14,19 @@ title: Home
 {% for howto in site.howtos %}
   <li>
     <a href="{{ howto.url | relative_url }}">
-      <div class="howto-link-title">{{ howto.title }}</div>
-      {% if howto.description %}
-      <div class="howto-link-desc">{{ howto.description }}</div>
-      {% endif %}
+      <div class="howto-card-image">
+        {% if howto.image %}
+        <img src="{{ howto.image | relative_url }}" alt="" loading="lazy" />
+        {% else %}
+        <div class="howto-card-image-placeholder">✦</div>
+        {% endif %}
+      </div>
+      <div class="howto-card-text">
+        <div class="howto-link-title">{{ howto.title }}</div>
+        {% if howto.description %}
+        <div class="howto-link-desc">{{ howto.description }}</div>
+        {% endif %}
+      </div>
     </a>
   </li>
 {% endfor %}

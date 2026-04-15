@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#161b22"/>
+  <rect x="50" y="60" width="300" height="180" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+  <rect x="50" y="60" width="300" height="28" rx="8" fill="#161b22"/>
+  <circle cx="68" cy="74" r="4.5" fill="#ff6b6b"/>
+  <circle cx="84" cy="74" r="4.5" fill="#feca57"/>
+  <circle cx="100" cy="74" r="4.5" fill="#1dd1a1"/>
+  <line x1="50" y1="88" x2="350" y2="88" stroke="#30363d" stroke-width="1"/>
+  <g font-family="ui-monospace, monospace" font-size="14">
+    <text x="70" y="118" fill="#1dd1a1">$</text>
+    <text x="85" y="118" fill="#58a6ff">claude</text>
+  </g>
+  <g font-family="ui-monospace, monospace" font-size="13" fill="#8b949e">
+    <text x="85" y="142">├── /agents</text>
+    <text x="85" y="162">├── /mcp</text>
+    <text x="85" y="182">├── /hooks</text>
+    <text x="85" y="202">└── /help</text>
+  </g>
+  <text x="70" y="222" fill="#1dd1a1" font-family="ui-monospace, monospace" font-size="14">$</text>
+  <rect x="85" y="210" width="8" height="15" fill="#58a6ff">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+</svg>
