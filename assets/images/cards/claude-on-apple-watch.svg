@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#161b22"/>
+  <!-- Watch band top -->
+  <rect x="167" y="28" width="66" height="42" rx="8" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5"/>
+  <line x1="180" y1="38" x2="220" y2="38" stroke="#58a6ff" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  <line x1="180" y1="46" x2="220" y2="46" stroke="#58a6ff" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  <line x1="180" y1="54" x2="220" y2="54" stroke="#58a6ff" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  <!-- Watch band bottom -->
+  <rect x="167" y="230" width="66" height="42" rx="8" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5"/>
+  <line x1="180" y1="240" x2="220" y2="240" stroke="#58a6ff" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  <line x1="180" y1="248" x2="220" y2="248" stroke="#58a6ff" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  <line x1="180" y1="256" x2="220" y2="256" stroke="#58a6ff" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  <!-- Watch body -->
+  <rect x="152" y="65" width="96" height="170" rx="22" fill="#0d1117" stroke="#58a6ff" stroke-width="2.5"/>
+  <!-- Digital crown -->
+  <rect x="248" y="120" width="10" height="24" rx="4" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5"/>
+  <!-- Side button -->
+  <rect x="249" y="155" width="8" height="14" rx="3" fill="#0d1117" stroke="#58a6ff" stroke-width="1"/>
+  <!-- Screen -->
+  <rect x="163" y="80" width="74" height="140" rx="14" fill="#0d1117" stroke="#58a6ff" stroke-width="1" opacity="0.6"/>
+  <!-- Incoming message bubble (left-aligned) -->
+  <rect x="170" y="92" width="42" height="16" rx="7" fill="none" stroke="#58a6ff" stroke-width="1.2"/>
+  <line x1="178" y1="100" x2="203" y2="100" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  <!-- Outgoing message bubble (right-aligned, Claude reply) -->
+  <rect x="188" y="116" width="42" height="16" rx="7" fill="#58a6ff" opacity="0.25" stroke="#58a6ff" stroke-width="1.2"/>
+  <line x1="196" y1="124" x2="222" y2="124" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <!-- Incoming message bubble 2 -->
+  <rect x="170" y="140" width="36" height="16" rx="7" fill="none" stroke="#58a6ff" stroke-width="1.2"/>
+  <line x1="178" y1="148" x2="198" y2="148" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  <!-- Outgoing message bubble 2 (Claude reply, longer) -->
+  <rect x="182" y="164" width="48" height="26" rx="7" fill="#58a6ff" opacity="0.25" stroke="#58a6ff" stroke-width="1.2"/>
+  <line x1="190" y1="174" x2="222" y2="174" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="190" y1="182" x2="214" y2="182" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <!-- Wireless signal arcs (connection indicator) -->
+  <path d="M86 140 Q86 130 94 125" fill="none" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+  <path d="M78 145 Q78 128 92 118" fill="none" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+  <path d="M70 150 Q70 126 90 112" fill="none" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.2"/>
+  <!-- Connection line to Mac -->
+  <line x1="96" y1="150" x2="150" y2="150" stroke="#58a6ff" stroke-width="1" stroke-dasharray="4 3" opacity="0.35"/>
+  <!-- Sparkle / AI indicator -->
+  <g transform="translate(310, 145)" fill="#58a6ff" opacity="0.5">
+    <path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2 Z"/>
+  </g>
+  <g transform="translate(326, 125)" fill="#58a6ff" opacity="0.3">
+    <path d="M0 -6 L1.2 -1.2 L6 0 L1.2 1.2 L0 6 L-1.2 1.2 L-6 0 L-1.2 -1.2 Z"/>
+  </g>
+</svg>
