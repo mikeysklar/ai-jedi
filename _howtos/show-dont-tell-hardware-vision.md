@@ -3,6 +3,7 @@ title: "Show, Don't Tell — Giving Claude Eyes on Your Hardware"
 description: "Closed-loop hardware debugging by piping a USB webcam and an oscilloscope straight into Claude. Real case study: landing a hardware-brightness PR on Adafruit's piomatter library."
 tags: [hardware, debugging, webcam, oscilloscope, claude-code, vision, rgb-matrix]
 image: /assets/images/cards/show-dont-tell-hardware-vision.svg
+order: 2
 ---
 
 <img src="https://github.com/user-attachments/assets/75854dc8-b555-40e4-b6f4-a031aa956045" alt="Webcam pointed at a 64x64 RGB matrix panel during closed-loop debugging" style="max-width: 75%; height: auto;" />

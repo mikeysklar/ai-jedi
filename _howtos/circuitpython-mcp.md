@@ -3,6 +3,7 @@ title: "CircuitPython MCP — Closed-Loop Hardware Debugging with Claude"
 description: "Give Claude Code a live REPL connection to your CircuitPython board for hands-free hardware debugging, sensor reads, and iterative development."
 tags: [circuitpython, mcp, hardware, repl, debugging]
 image: /assets/images/cards/circuitpython-mcp.svg
+order: 5
 ---
 
 ## TL;DR — What This Does

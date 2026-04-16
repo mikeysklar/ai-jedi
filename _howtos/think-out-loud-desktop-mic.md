@@ -3,6 +3,7 @@ title: "Think Out Loud — Stream-of-Consciousness Coding with a Desktop Mic"
 description: "Swap the keyboard for a $25 gooseneck USB mic and start talking to Claude the way you actually think. Less friction, more ideas, fewer typos."
 tags: [voice, dictation, workflow, claude-code, productivity, hardware]
 image: /assets/images/cards/think-out-loud-desktop-mic.svg
+order: 1
 ---
 
 ```

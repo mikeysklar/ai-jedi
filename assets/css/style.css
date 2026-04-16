@@ -80,6 +80,16 @@ main {
 /* Homepage */
 .hero {
   margin-bottom: 3rem;
+  text-align: center;
+}
+
+.hero-art {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  margin: 0 auto 1.25rem;
+  color: var(--text);
 }
 
 .hero h1 {

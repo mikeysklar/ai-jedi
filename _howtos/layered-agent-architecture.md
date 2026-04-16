@@ -3,6 +3,7 @@ title: "Layered Agent Architecture — Multi-Agent Workflows with Claude Code"
 description: "A three-layer agentic workflow (Orchestrator → Architect → Implementers) for running complex, autonomous tasks with minimal human prompting."
 tags: [agents, architecture, automation, llm, workflow, claude-code]
 image: /assets/images/layered-agent-architecture.png
+order: 3
 ---
 
 <img src="{{ '/assets/images/layered-agent-architecture.png' | relative_url }}" alt="Layered Agent Architecture" style="max-width: 75%; height: auto;" />
